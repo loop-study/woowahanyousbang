@@ -2,6 +2,7 @@ package woowahanyousbang.apply.domain;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -37,6 +38,14 @@ public class CurrencyTest {
     void 환율_0_이하면_예외(Double exchangeRate) {
         assertThatIllegalArgumentException()
                 .isThrownBy(() -> new Currency("KRW", BigDecimal.valueOf(exchangeRate)));
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"1.10,10,11.00", "0.10,10,1.00", "1111.00,10,11110.00"}, delimiter = ',')
+    void 수취금액_계산(BigDecimal exchangeRate, BigDecimal remittance, BigDecimal receivable) {
+        Currency currency = new Currency("KRW", exchangeRate);
+
+        assertThat(currency.exchange(remittance)).isEqualTo(receivable);
     }
 }
 

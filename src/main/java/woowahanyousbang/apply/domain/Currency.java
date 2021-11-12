@@ -11,11 +11,15 @@ public class Currency {
     private String name;
     private BigDecimal exchangeRate;
 
-    Currency(String name, BigDecimal exchangeRate) {
+    public Currency(String name, BigDecimal exchangeRate) {
         validationName(name);
         validationExchangeRate(exchangeRate);
         this.name = name;
         this.exchangeRate = exchangeRate;
+    }
+
+    public BigDecimal exchange(BigDecimal remittance){
+        return exchangeRate.multiply(remittance);
     }
 
     private void validationExchangeRate(BigDecimal exchangeRate) {
