@@ -1,18 +1,18 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink- to-fit=no">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css" integrity="sha384- ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link href="/css/jumbotron-narrow.css" rel="stylesheet">
-    <title>Hello, world!</title>
+    <title>우아한유스방 - 2기, 환전 문제</title>
 </head>
+<style>
+    .hide {
+        display : none;
+    }
+</style>
 <body>
-<div class="container">
-    <form role="form" action="/exchange" method="post">
+    <div class="container">
         <div class="form-group">
             <label>송금국가:</label>
             <span>미국(USD)</span>
@@ -20,23 +20,82 @@
 
         <div class="form-group">
             <label for="country">수취국가:</label>
-            <select name="country" id="country" class="form-control">
-                <option th:each="currency : ${currencies}" th:value="${currency.name}"
-                        th:text="${currency.name}" th:data="${currency.exchangeRate}"/>
+            <select name="country" id="country" class="form-control" onchange="changeCountry()">
+                <option th:each="currency : ${currencies}" th:value="${currency.exchangeRate}"
+                        th:text="${currency.name}" />
             </select>
         </div>
 
         <div class="form-group">
             <label>환율:</label>
-            <span id="currency_info"></span>
-            <button type="button" class="btn btn-primary">환전</button>
+            <span id="exchange_rate_span"></span>
         </div>
 
         <div class="form-group">
             <label>송금액:</label>
-            <input id="remittance" type="number" /> <span>USD</span>
+            <input id="remittance" type="number"/> <span>USD</span>
         </div>
-    </form>
-</div> <!-- /container -->
+
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" onclick="exchange()">환전</button>
+        </div>
+
+        <div class="form-group hide" id="receivable_group">
+            <span>수취금액은</span>
+            <span id="receivable_span"></span>
+            <span> 입니다.</span>
+        </div>
+    </div> <!-- /container -->
 </body>
+<script>
+    function changeCountry() {
+        var currency = currencyInfo();
+        var rateSpan = document.getElementById("exchange_rate_span");
+
+        rateSpan.innerHTML = numberWithCommas(currency.value) + " " + currency.text + "/USD";
+    }
+
+    function exchange() {
+        var receivableSpan = document.getElementById("receivable_span");
+        var receivableGroup = document.getElementById("receivable_group");
+        var remittance = document.getElementById("remittance");
+        var currency = currencyInfo();
+        var receivable = remittance.value * currency.value;
+
+        if (validationRemittance(remittance)) {
+            receivableSpan.innerHTML = numberWithCommas(receivable.toFixed(2)) + " " + currency.text;
+            receivableGroup.style.display = "block";
+        }
+    }
+
+    function validationRemittance(remittance) {
+
+        if (remittance.value === ""
+            || isNaN(remittance.value)
+            || remittance.value < 0) {
+            alert("송금액이 잘못되었습니다.");
+            remittance.value = "";
+            return false;
+        }
+
+        return true;
+    }
+
+    function numberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    function currencyInfo() {
+        var country = document.getElementById("country");
+
+        return {
+            value : country.options[country.selectedIndex].value,
+            text : country.options[country.selectedIndex].text
+        }
+    }
+
+    window.onload = function () {
+        changeCountry();
+    }
+</script>
 </html>

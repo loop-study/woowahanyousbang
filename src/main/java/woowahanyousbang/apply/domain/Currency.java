@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -24,11 +25,14 @@ public class Currency {
 
     private BigDecimal exchangeRate;
 
+    private LocalDateTime dateTime;
+
     public Currency(String name, BigDecimal exchangeRate) {
         validationName(name);
         validationExchangeRate(exchangeRate);
         this.name = name;
         this.exchangeRate = exchangeRate;
+        this.dateTime = LocalDateTime.now();
     }
 
     public BigDecimal exchange(BigDecimal remittance){
@@ -41,6 +45,10 @@ public class Currency {
 
     public BigDecimal getExchangeRate() {
         return exchangeRate;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
     private void validationExchangeRate(BigDecimal exchangeRate) {

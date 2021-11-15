@@ -28,6 +28,7 @@ public class ExchangeService {
         CurrencyForm currencyForm = new CurrencyForm();
         currencyForm.setName(currency.getName());
         currencyForm.setExchangeRate(currency.getExchangeRate());
+        currencyForm.setDateTime(currency.getDateTime());
         return currencyForm;
     }
 }

@@ -1,11 +1,13 @@
 package woowahanyousbang.apply.ui;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class CurrencyForm {
 
     private String name;
     private BigDecimal exchangeRate;
+    private LocalDateTime dateTime;
 
     public String getName() {
         return name;
@@ -21,5 +23,13 @@ public class CurrencyForm {
 
     public void setExchangeRate(BigDecimal exchangeRate) {
         this.exchangeRate = exchangeRate;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 }

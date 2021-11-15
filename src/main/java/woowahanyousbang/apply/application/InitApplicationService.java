@@ -10,12 +10,12 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Service
-public class ApplicationService {
+public class InitApplicationService {
     private final CurrencyRepository currencyRepository;
     private final CurrencyLayer currencyLayer;
 
-    public ApplicationService(CurrencyRepository currencyRepository,
-                              CurrencyLayer currencyLayer) {
+    public InitApplicationService(CurrencyRepository currencyRepository,
+                                  CurrencyLayer currencyLayer) {
         this.currencyRepository = currencyRepository;
         this.currencyLayer = currencyLayer;
     }
@@ -23,7 +23,7 @@ public class ApplicationService {
     @PostConstruct
     public void init() {
         List<CurrencyForm> currencyFormList = currencyLayer.currenciesInfo();
-        System.out.println(currencyFormList);
+
         currencyFormList.forEach(form
                 -> currencyRepository.save(new Currency(form.getName(), form.getExchangeRate())));
     }
