@@ -1,11 +1,12 @@
 package woowahanyousbang.apply.infra;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
-public class CurrencyLayerForm {
+public class CurrencyLayerDTO {
     private boolean success;
     private String source;
-    private Map quotes;
+    private Map<String, BigDecimal> quotes;
 
     public boolean isSuccess() {
         return success;

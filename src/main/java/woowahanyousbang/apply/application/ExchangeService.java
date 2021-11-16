@@ -2,8 +2,8 @@ package woowahanyousbang.apply.application;
 
 import org.springframework.stereotype.Service;
 import woowahanyousbang.apply.domain.Currency;
-import woowahanyousbang.apply.domain.CurrencyRepository;
-import woowahanyousbang.apply.ui.CurrencyForm;
+import woowahanyousbang.apply.infra.CurrencyRepository;
+import woowahanyousbang.apply.ui.CurrencyDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +16,7 @@ public class ExchangeService {
         this.currencyRepository = currencyRepository;
     }
 
-    public List<CurrencyForm> findAll() {
+    public List<CurrencyDTO> findAll() {
         List<Currency> currencies = currencyRepository.findAll();
 
         return currencies.stream()
@@ -24,8 +24,8 @@ public class ExchangeService {
                 .collect(Collectors.toList());
     }
 
-    private CurrencyForm toCurrencyForm(Currency currency) {
-        CurrencyForm currencyForm = new CurrencyForm();
+    private CurrencyDTO toCurrencyForm(Currency currency) {
+        CurrencyDTO currencyForm = new CurrencyDTO();
         currencyForm.setName(currency.getName());
         currencyForm.setExchangeRate(currency.getExchangeRate());
         currencyForm.setDateTime(currency.getDateTime());

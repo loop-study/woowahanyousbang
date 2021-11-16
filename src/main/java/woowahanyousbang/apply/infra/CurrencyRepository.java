@@ -1,12 +1,11 @@
-package woowahanyousbang.apply.domain;
+package woowahanyousbang.apply.infra;
+
+import woowahanyousbang.apply.domain.Currency;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CurrencyRepository {
     Currency save(Currency currency);
-
-    Optional<Currency> findById(Long id);
 
     List<Currency> findAll();
 }

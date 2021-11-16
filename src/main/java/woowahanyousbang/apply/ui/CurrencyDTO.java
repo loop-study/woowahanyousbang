@@ -3,7 +3,7 @@ package woowahanyousbang.apply.ui;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class CurrencyForm {
+public class CurrencyDTO {
 
     private String name;
     private BigDecimal exchangeRate;

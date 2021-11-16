@@ -1,12 +1,10 @@
 package woowahanyousbang.apply.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 public class Currency {
@@ -18,8 +16,8 @@ public class Currency {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id", columnDefinition = "varbinary(16)")
+    private UUID id;
 
     private String name;
 
@@ -30,6 +28,7 @@ public class Currency {
     public Currency(String name, BigDecimal exchangeRate) {
         validationName(name);
         validationExchangeRate(exchangeRate);
+        this.id = UUID.randomUUID();
         this.name = name;
         this.exchangeRate = exchangeRate;
         this.dateTime = LocalDateTime.now();
@@ -37,6 +36,10 @@ public class Currency {
 
     public BigDecimal exchange(BigDecimal remittance){
         return exchangeRate.multiply(remittance);
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public String getName() {
@@ -65,5 +68,18 @@ public class Currency {
         if (name.length() != 3) {
             throw new IllegalArgumentException(NAME_SIZE_ERROR_MESSAGE);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Currency currency = (Currency) o;
+        return Objects.equals(getName(), currency.getName()) && Objects.equals(getExchangeRate(), currency.getExchangeRate()) && Objects.equals(getDateTime(), currency.getDateTime());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getExchangeRate(), getDateTime());
     }
 }

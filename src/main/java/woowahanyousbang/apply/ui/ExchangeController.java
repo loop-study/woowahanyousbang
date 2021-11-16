@@ -19,7 +19,7 @@ public class ExchangeController {
 
     @GetMapping("/")
     public String exchange(Model model) {
-        List<CurrencyForm> currencies = exchangeService.findAll();
+        List<CurrencyDTO> currencies = exchangeService.findAll();
         model.addAttribute("currencies", currencies);
         return "exchange";
     }
