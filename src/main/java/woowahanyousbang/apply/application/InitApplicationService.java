@@ -22,9 +22,13 @@ public class InitApplicationService {
 
     @PostConstruct
     public void init() {
-        List<CurrencyDTO> currencyFormList = currencyClient.currenciesInfo();
+        try {
+            List<CurrencyDTO> currencyFormList = currencyClient.currenciesInfo();
 
-        currencyFormList.forEach(form
-                -> currencyRepository.save(new Currency(form.getName(), form.getExchangeRate())));
+            currencyFormList.forEach(form
+                    -> currencyRepository.save(new Currency(form.getName(), form.getExchangeRate())));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

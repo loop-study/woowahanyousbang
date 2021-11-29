@@ -5,5 +5,5 @@ import woowahanyousbang.apply.ui.CurrencyDTO;
 import java.util.List;
 
 public interface CurrencyClient {
-    List<CurrencyDTO> currenciesInfo();
+    List<CurrencyDTO> currenciesInfo() throws Exception;
 }

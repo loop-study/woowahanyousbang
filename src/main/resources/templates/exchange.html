@@ -12,7 +12,7 @@
     }
 </style>
 <body>
-    <div class="container">
+    <div class="container" th:if="${not #lists.isEmpty(currencies)}">
         <div class="form-group">
             <label>송금국가:</label>
             <span>미국(USD)</span>
@@ -45,7 +45,14 @@
             <span id="receivable_span"></span>
             <span> 입니다.</span>
         </div>
-    </div> <!-- /container -->
+    </div>
+    <div class="container" th:if="${#lists.isEmpty(currencies)}">
+        <div class="form-group">
+            <label>에러</label>
+            <span>서버가 불안정해서 잠시 후에 재시도 부탁드립니다.</span>
+        </div>
+    </div>
+    <!-- /container -->
 </body>
 <script>
     function changeCountry() {
@@ -96,6 +103,8 @@
 
     window.onload = function () {
         changeCountry();
+
+
     }
 </script>
 </html>

@@ -1,6 +1,9 @@
 package woowahanyousbang.apply.infra;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.EnableRetry;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import woowahanyousbang.apply.ui.CurrencyDTO;
@@ -10,9 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
+@EnableRetry
 @Component
 public class CurrencyLayerClient implements CurrencyClient {
-    private static final String url = "http://api.currencylayer.com/live?access_key=acef7b834bf5c7d8aff8fbc45a46db0a&currencies=KRW,JPY,PHP&format=1";
+    private static final String URL = "http://api.currencylayer.com/live?access_key=acef7b834bf5c7d8aff8fbc45a46db0a&currencies=KRW,JPY,PHP&format=1";
+    private static final String FAIL_MESSAGE = "환율 정보 조회에 실패했습니다.";
 
     private final RestTemplate restTemplate;
 
@@ -20,9 +26,19 @@ public class CurrencyLayerClient implements CurrencyClient {
         this.restTemplate = restTemplateBuilder.build();
     }
 
+
     @Override
-    public List<CurrencyDTO> currenciesInfo() {
-        CurrencyLayerDTO currencyLayerDTO = restTemplate.getForObject(url, CurrencyLayerDTO.class);
+    @Retryable(
+        maxAttempts = 3,
+        backoff = @Backoff(3000)
+    )
+    public List<CurrencyDTO> currenciesInfo() throws Exception {
+        CurrencyLayerDTO currencyLayerDTO = restTemplate.getForObject(URL, CurrencyLayerDTO.class);
+
+        if (!currencyLayerDTO.isSuccess()) {
+            throw new Exception(FAIL_MESSAGE);
+        }
+
         return toCurrencyForm(currencyLayerDTO);
     }
 

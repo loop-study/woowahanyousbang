@@ -18,7 +18,6 @@ public class ExchangeService {
 
     public List<CurrencyDTO> findAll() {
         List<Currency> currencies = currencyRepository.findAll();
-
         return currencies.stream()
                 .map(currency -> toCurrencyForm(currency))
                 .collect(Collectors.toList());

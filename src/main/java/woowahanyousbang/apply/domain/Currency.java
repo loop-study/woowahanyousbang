@@ -12,8 +12,7 @@ public class Currency {
     private static String NAME_SIZE_ERROR_MESSAGE = "화폐명은 3글자입니다.";
     private static String EXCHANGE_RATE_ERROR_MESSAGE = "환율은 0보다 커야합니다.";
 
-    protected Currency() {
-    }
+    protected Currency() { }
 
     @Id
     @Column(name = "id", columnDefinition = "varbinary(16)")
