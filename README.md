@@ -53,7 +53,54 @@
   - [x] 송금액을 받는다.
   
 
+## 코드 피드백 정리 
+1. 환율 정보 업데이트 주기(하루 혹은 1분 단위)에 따른 대응이 안되어있다.
+2. JPA에서 리스트 저장은 saveAll 혹은 벌크인서트 사용. 
+3. System.out.print 대신 로그 프레임워크로 사용하기 
+4. InitApplicationService(application 계층)이 CurrncyDTO(ui 계층)에 의존하는데 이런 패키지 구조로 잡은 이유는? 
+   - 아키텍처 구조에 대해 고민해볼 것 [링크](https://wikibook.co.kr/article/layered-architecture)
+5. lombok 추가했지만 사용을 안한다.
+6. Currency의 UUID id 사용했는데 이유는? 
+   - UUID를 왜 썼는지 설명이 안된다면 Long 쓰는게 더 낫다. 디비 용량 입장에선 16자리나 잡아먹어서 낭비다. 인덱스나 드로윙 등 Long이 더 좋다. 
+7. Currency에서 equals, hashcode 오버라이드한 이유는 무엇인가? equals 에서는 id가 없이 되어있다. 무슨 의도인가? 
+8. dateTime에서 LocalDateTime으로 넣고있는데 왜?
+9. CurrencyClient와 CurrencyRepository 종류에 대한 설명
+10. CurrencyLayerClient에서 RestTemplete을 선택한 이유는 무엇인가?
+11. WebClient와 RestTemplete의 차이점은?
+12. Spring-Retry 관련된 자동화 테스트 코드가 있는가?
+13. accessKey, api url 같은건 자주 바뀌니, 프로퍼티로 관리하는게 좋다.
+14. Retry에서 maxAttempts를 3으로 명시한 이유는? 디폴트라면 명시안해도 되지 않는가?
+15. RumtimeException이 아닌 Exception을 사용한 이유는?
+    - 다양한 Exception에 대해 알아보기
+16. ExceptionHandler가 있는가?
+17. BigDecimal은 잘 사용하고 있다.
+18. infra 계층에 CurrencyRepository 두는 이유가 있는가?
+    -> 이해에 따라 정의가 달라지겠지만, 도메인으로 두는지 인프라로 두는지 DDD 다시 공부해볼것
+19. CurrencyTest에서 생성에서 isNotNull()로 확인하는데 인스턴스를 생성할 때 Null인 경우가 있는가?
+    -> new 연산자를 사용하면 인스턴스는 생성된다. 자바코드 학습코드로 보인다. assertDoesNotThrow 같은걸로 확인하는게 좋다.  
+20. 화폐명 3글자에 3글자이면서 화폐가 아닌 경우 "ABC" 이런 경우, 어떻게 예외처리할 것인지. (외부API 없이 검증 방법)
+21. ExchangeServiceTest를 보면 ExchangeService를 사용하지 않는다. CurrencyRepository만 테스트한다.
+22. InitApplicationServiceTest를 보면 이해하기 쉽지 않다. 사용하는 의존성을 다 파악해야한다.
+    -> currencies에 어떤 값이 들어있는지 테스트 코드에 값을 드러내는게 더 좋아보인다.
+23. *외부API 여러 문제가 발생되었을 시 고려할 부분을 지킨 다음에 위의 사항 고민해볼 것.     
 
- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
